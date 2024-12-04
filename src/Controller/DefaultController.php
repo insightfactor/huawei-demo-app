@@ -25,22 +25,10 @@ class DefaultController extends AbstractController
             [
                 'name' => 'Demo App',
                 'appEnv' => $this->parameterBag->get('app_env'),
-                'userCount' => $this->getUserCount(),
+                'databaseConnected' => $this->entityManager->getConnection()->connect(),
                 'apcuCacheActivated' => $this->checkApcuCache()
             ]
         );
-    }
-
-    private function getUserCount(): int
-    {
-        $sql = "select count(u.id) as count from tbl_users u";
-        $result = $this->entityManager
-            ->getConnection()
-            ->prepare($sql)
-            ->executeQuery()
-            ->fetchAssociative();
-
-        return $result['count'];
     }
 
     private function checkApcuCache(): bool
